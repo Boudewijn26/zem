@@ -1,3 +1,6 @@
+/specs/model/java
+/specs/model/python
+
 /target/
 !.mvn/wrapper/maven-wrapper.jar
 
