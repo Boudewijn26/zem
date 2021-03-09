@@ -3,12 +3,27 @@
 	"$schema": "https://json-schema.org/draft/2020-12/schema",
 	"title": "Predicted usage",
 	"description": "The predicted usage of the shower",
+	"type": "object",
 	"required": [
 		"usages"
 	],
-	"type": "object",
 	"properties": {
-		"usage": {
+		"usages": {
+			"type": "array",
+			"items": {
+				"$ref": "#/$defs/usage"
+			}
+		}
+	}
+},
+"$defs": {
+    "usage":": {
+      "type": "object",
+      "required": [ "veggieName", "veggieLike" ],
+      "properties": {
+    
+	
+		 {
 			"type": "object",
 			"properties": {
 				"usage": {
