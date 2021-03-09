@@ -1,0 +1,30 @@
+{
+	"$id": "https://example.com/geographical-location.schema.json",
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"title": "Predicted usage",
+	"description": "The predicted usage of the shower",
+	"required": [
+		"usages"
+	],
+	"type": "object",
+	"properties": {
+		"usage": {
+			"type": "object",
+			"properties": {
+				"usage": {
+					"description": "The current usage",
+					"type": "number",
+					"minimum": 0
+				},
+				"unit": {
+					"description": "The unit in which the usage is expressed",
+					"type": "string",
+					"enum": [
+						"kWh",
+						"Joules"
+					]
+				}
+			}
+		}
+	}
+}
