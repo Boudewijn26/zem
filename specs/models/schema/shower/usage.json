@@ -1,8 +1,8 @@
 {
 	"$schema": "http://json-schema.org/draft-04/schema#",
 	"type": "object",
-	"additionalProperties": false,
-	"definitions": {
+	"$id": "http://nl.contentisbv.zem/schemas/usage",
+	"properties": {
 		"usage": {
 			"type": "object",
 			"properties": {

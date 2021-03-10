@@ -5,7 +5,7 @@
 	"description": "The current usage of the shower",
 	"properties": {
 	 	"current_usage": {
-            "$ref": "usage.json#/definitions/usage"
+            "$ref": "http://nl.contentisbv.zem/schemas/usage"
         }
 	}
 }

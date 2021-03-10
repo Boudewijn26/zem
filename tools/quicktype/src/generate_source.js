@@ -1,4 +1,17 @@
-const { promises: { readFile } } = require('fs');
+
+const targetLanguage = "Java";
+const path = require('path'); 
+const fs = require('fs');
+const { promises: { 
+	readFile,
+	readdir,
+	filter,
+} } = require('fs');
+
+function extension(element) {
+  var extName = path.extname(element);
+  return extName === '.json'; 
+};
 
 const {
 	quicktype,
@@ -8,15 +21,29 @@ const {
 	FetchingJSONSchemaStore,
 } = require("quicktype-core");
 
-// call quicktype --lang Java --out ..\specs\models\java\ --package nl.contentisbv.shower --src-lang schema ..\specs\models\schema\shower\predicted_usage.json
+async function main() {
 
-async function quicktypeJSONSchema(targetLanguage, typeName, jsonSchemaString) {
-
+	testFolder = '/Users/miria/contentis/git/zem/specs/models/schema/shower';
 	const schemaInput = new JSONSchemaInput(new FetchingJSONSchemaStore());
 
-	// We could add multiple schemas for multiple types,
-	// but here we're just making one type from JSON schema.
-	await schemaInput.addSource({ name: typeName, schema: jsonSchemaString });
+
+	const files = await readdir(testFolder);
+    const promises = files.filter(extension).map(async function(name) {
+
+        var filePath = path.join(testFolder, name);
+        var result = path.parse(filePath);				
+
+        var objectName = result.name;
+
+        console.log("Adding source " + filePath );
+        console.log("Object name " + objectName );
+
+        var schemaData = await readFile(filePath, 'utf8');				
+
+        await schemaInput.addSource({ name: objectName, schema: schemaData });
+    });
+
+    await Promise.all(promises);
 
 	const inputData = new InputData();
 	inputData.addInput(schemaInput);
@@ -25,20 +52,9 @@ async function quicktypeJSONSchema(targetLanguage, typeName, jsonSchemaString) {
 		inputData,
 		lang: targetLanguage,
 	});
-}
-
-async function main() {
-
-	const data = await readFile('../../specs/models/schema/shower/current_usage.json', 'utf8');
 	
-	const { lines: javaPerson } = await quicktypeJSONSchema(
-		"Java",
-		"usage",
-		data
-	);
-	
-	console.log(javaPerson.join("\n"));
-
+	console.log(usage.join("\n"));
 }
 
 main();
+
