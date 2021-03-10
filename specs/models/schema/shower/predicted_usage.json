@@ -11,7 +11,7 @@
 		"usages": {
       		"type": "array",
       		"items": {             
-      			"$ref": "http://www.contentisbv.nl/json/usage.json#"
+      			"$ref": "usage"
   			}
   		}
     }
