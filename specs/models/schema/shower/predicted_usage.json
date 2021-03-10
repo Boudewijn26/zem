@@ -9,37 +9,10 @@
 	],
 	"properties": {
 		"usages": {
-			"type": "array",
-			"items": {
-				"$ref": "#/$defs/usage"
-			}
-		}
-	}
-},
-"$defs": {
-    "usage":": {
-      "type": "object",
-      "required": [ "veggieName", "veggieLike" ],
-      "properties": {
-    
-	
-		 {
-			"type": "object",
-			"properties": {
-				"usage": {
-					"description": "The current usage",
-					"type": "number",
-					"minimum": 0
-				},
-				"unit": {
-					"description": "The unit in which the usage is expressed",
-					"type": "string",
-					"enum": [
-						"kWh",
-						"Joules"
-					]
-				}
-			}
-		}
-	}
+      		"type": "array",
+      		"items": {             
+      			"$ref": "usage.json#/definitions/usage"
+  			}
+  		}
+    }
 }

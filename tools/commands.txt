@@ -1,2 +1,0 @@
-call quicktype --lang Java --out ..\specs\models\java\ --package nl.contentisbv.shower --src-lang schema ..\specs\models\schema\shower\current_usage.json
-call quicktype --lang Java --out ..\specs\models\java\ --package nl.contentisbv.shower --src-lang schema ..\specs\models\schema\shower\predicted_usage.json

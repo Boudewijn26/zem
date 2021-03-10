@@ -1,4 +1,4 @@
-var fs = require('fs');
+const { promises: { readFile } } = require('fs');
 
 const {
 	quicktype,
@@ -29,8 +29,8 @@ async function quicktypeJSONSchema(targetLanguage, typeName, jsonSchemaString) {
 
 async function main() {
 
-	var data = fs.readFileSync('C:\Users\miria\contentis\git\zem\specs\models\schema\shower\current_usage.json', 'utf8');
-
+	const data = await readFile('../../specs/models/schema/shower/current_usage.json', 'utf8');
+	
 	const { lines: javaPerson } = await quicktypeJSONSchema(
 		"Java",
 		"usage",

@@ -1,17 +1,16 @@
 {
-  "name": "quicktime-caller",
+  "name": "quicktype-caller",
   "version": "1.0.0",
-  "description": "Calls quicktime like we want to",
-  "main": "index.js",
+  "description": "Calls quicktype like we want to",
+  "main": "generate_source.js",
+  "dependencies": {
+    "quicktype": "^15.0.260",
+    "quicktype-core": "^6.0.70"
+  },
+  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [
-    "quicktime"
-  ],
   "author": "Miriam van Soest",
-  "license": "ISC",
-  "dependencies": {
-    "quicktype-core": "^6.0.70"
-  }
+  "license": "ISC"
 }

@@ -3,24 +3,9 @@
 	"$schema": "https://json-schema.org/draft/2020-12/schema",
 	"title": "Current usage",
 	"description": "The current usage of the shower",
-	"required": [
-		"usage",
-		"unit"
-	],
-	"type": "object",
 	"properties": {
-		"usage": {
-			"description": "The current usage",
-			"type": "number",
-			"minimum": 0
-		},
-		"unit": {
-			"description": "The unit in which the usage is expressed",
-			"type": "string",
-			"enum": [
-				"kWh",
-				"Joules"
-			]
-		}
+	 	"current_usage": {
+            "$ref": "usage.json#/definitions/usage"
+        }
 	}
 }
