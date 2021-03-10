@@ -1,0 +1,17 @@
+{
+  "name": "quicktime-caller",
+  "version": "1.0.0",
+  "description": "Calls quicktime like we want to",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "quicktime"
+  ],
+  "author": "Miriam van Soest",
+  "license": "ISC",
+  "dependencies": {
+    "quicktype-core": "^6.0.70"
+  }
+}

@@ -1,0 +1,24 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"type": "object",
+	"additionalProperties": false,
+	"definitions": {
+		"usage": {
+			"type": "object",
+			"properties": {
+				"value": {
+					"description": "The current usage",
+					"type": "number"
+				},
+				"unit": {
+					"description": "The unit in which the usage is expressed",
+					"type": "string",
+					"enum": [
+						"kWh",
+						"Joules"
+					]
+				}
+			}
+		}
+	}
+}
