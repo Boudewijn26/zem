@@ -11,7 +11,7 @@
 		"usages": {
       		"type": "array",
       		"items": {             
-      			"$ref": "usage"
+      			"$ref": "http://nl.contentisbv.zem/schemas/usage"
   			}
   		}
     }

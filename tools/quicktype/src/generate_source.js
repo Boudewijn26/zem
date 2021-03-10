@@ -15,15 +15,11 @@ const {
 	quicktype,
 	InputData,
 	jsonInputForTargetLanguage,
-	JSONSchemaInput,
-	FetchingJSONSchemaStore,
 } = require("quicktype-core");
 
 async function main() {
-	const testFolder = '/Users/miria/contentis/git/zem/specs/models/schema/shower';
-	const schemaInput = new JSONSchemaInput(new FetchingJSONSchemaStore());
+	const testFolder = '../../../specs/models/schema/shower';
 	const inputData = new InputData();
-	inputData.addInput(schemaInput);
 
 
 	const files = await readdir(testFolder);
@@ -37,8 +33,10 @@ async function main() {
         console.log("Adding source " + filePath );
         console.log("Object name " + objectName );
 
-        var schemaData = await readFile(filePath, 'utf8');				
-        await schemaInput.addSource({ name: objectName, schema: schemaData });
+        var schemaData = await readFile(filePath, 'utf8');
+		const input = jsonInputForTargetLanguage(targetLanguage);
+		await input.addSource({ name: objectName, samples: [schemaData] });
+		inputData.addInput(input);
     });
 
     await Promise.all(promises);
@@ -47,9 +45,7 @@ async function main() {
 		inputData,
 		lang: targetLanguage,
 	});
-	
-	console.log(usage.join("\n"));
 }
 
-main().then((result) => console.log(result));
+main().then((result) => console.log(result.lines.join("\n")));
 
