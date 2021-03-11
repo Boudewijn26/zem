@@ -14,9 +14,7 @@ const {
 } = require("quicktype-core");
 const fs = require("fs");
 
-
 // Config
-const targetLanguage = "Java";
 const basePath = "../../../specs/models/schema/";
 const baseCodePath = "../../../generated-sources/models";
 const languages = ["Java", "Python"];
@@ -27,13 +25,14 @@ const languages = ["Java", "Python"];
  * @returns
  */
 async function main() {
-
   createOutputEnvironment();
 
   var result = getDirectories(basePath);
-  
-  result.forEach(subFolder => {
-    generateApi(subFolder);    
+
+  result.forEach((subFolder) => {
+    languages.forEach(language => {
+      generateApi(language, subFolder);  
+    });    
   });
 
   return;
@@ -42,6 +41,8 @@ async function main() {
 main();
 
 function createOutputEnvironment() {
+  fs.rmdirSync(baseCodePath, { recursive: true });
+
   createFolderIfNotExist(baseCodePath);
   languages.forEach((language) => {
     createFolderIfNotExist(path.join(baseCodePath, language));
@@ -56,9 +57,9 @@ function createOutputEnvironment() {
  * @param {*} subPath
  * @returns
  */
-async function generateApi(subPath) {
+async function generateApi(language, subPath) {
   const outputFolder = path.join(
-    path.join(baseCodePath, targetLanguage),
+    path.join(baseCodePath, language),
     subPath
   );
   const inputFolder = basePath + "/" + subPath;
@@ -69,7 +70,7 @@ async function generateApi(subPath) {
 
   const files = await readdir(inputFolder);
 
-  await addJsonFilesToSchema(inputData, files, inputFolder);
+  await addJsonFilesToSchema(inputData, language, files, inputFolder);
 
   //
   // TODO Change package with subdir?
@@ -79,7 +80,7 @@ async function generateApi(subPath) {
   //
   const result = await quicktypeMultiFile({
     inputData,
-    lang: targetLanguage,
+    lang: language,
     rendererOptions: { package: "nl.contentisbv.zem.models." + subPath },
   });
 
@@ -113,13 +114,13 @@ async function generateApi(subPath) {
  * @param {*} files
  * @param {*} testFolder
  */
-async function addJsonFilesToSchema(inputData, files, testFolder) {
+async function addJsonFilesToSchema(inputData, language, files, testFolder) {
   console.log("addJsonFilesToSchema");
 
   const promises = files
     .filter(jsonExtensionFilter(".json"))
     .map(async function (name) {
-      await addFileToInputSchema(inputData, testFolder, name);
+      await addFileToInputSchema(inputData, language, testFolder, name);
     });
 
   await Promise.all(promises);
@@ -132,7 +133,7 @@ async function addJsonFilesToSchema(inputData, files, testFolder) {
  * @param {*} testFolder
  * @param {*} name
  */
-async function addFileToInputSchema(inputData, testFolder, name) {
+async function addFileToInputSchema(inputData, language, testFolder, name) {
   console.log("Adding source " + name + " to Quicktype source ");
 
   const filePath = path.join(testFolder, name);
@@ -142,7 +143,7 @@ async function addFileToInputSchema(inputData, testFolder, name) {
 
   const schemaData = await readFile(filePath, "utf8");
 
-  const input = jsonInputForTargetLanguage(targetLanguage);
+  const input = jsonInputForTargetLanguage(language);
   await input.addSource({ name: objectName, samples: [schemaData] });
 
   inputData.addInput(input);
@@ -164,17 +165,20 @@ function jsonExtensionFilter(extension) {
  * @param {*} folder
  */
 function createFolderIfNotExist(folder) {
-
   if (!fs.existsSync(folder)) {
     console.log("Creating folder " + folder);
     fs.mkdirSync(folder);
   }
 }
 
-  function getDirectories(path) {
-    return fs.readdirSync(path).filter(function (file) {
-
-      return fs.statSync(path + "/" + file).isDirectory();
-      
-    });
-  }
+/**
+ * Returns a list of directories in directory "path""
+ *
+ * @param {*} path
+ * @returns
+ */
+function getDirectories(path) {
+  return fs.readdirSync(path).filter(function (file) {
+    return fs.statSync(path + "/" + file).isDirectory();
+  });
+}
