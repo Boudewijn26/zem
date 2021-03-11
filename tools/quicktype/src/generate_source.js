@@ -35,21 +35,21 @@ async function main() {
 		lang: targetLanguage,
 	});
 
+	var filename = "test.txt";
+
 	result.lines.forEach(element => {
-		var filename = "test.txt";
 		var fs = require('fs');
 
 		if (element.startsWith("//")) {
+			
 			console.log("---------------------------------------");
-			
 			filename = element.substr(3);
-			console.log(filename);
 			
+			console.log("Changing filename to " + filename);
 		} else {
 
-			fs.appendFile(filename, element, function (err) {
+			fs.appendFile(filename, element + "\n", function (err) {
 			if (err) return console.log(err);
-				
 			});
 		}
 	});
