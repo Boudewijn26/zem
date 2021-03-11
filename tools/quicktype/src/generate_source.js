@@ -1,8 +1,10 @@
 const path = require('path'); 
 const { promises: { 
+	fs,
 	readFile,
 	readdir,
 	filter,
+	appendFile,
 } } = require('fs');
 
 const {
@@ -12,7 +14,7 @@ const {
 } = require("quicktype-core");
 
 // Config
-const targetLanguage = "Python";
+const targetLanguage = "Java";
 const basePath = "../../../specs/models/schema/";
 
 /**
@@ -28,13 +30,38 @@ async function main() {
 
     await addJsonFilesToSchema(inputData, files, testFolder);
 
-	return await quicktype({
+	var result =  await quicktype({
 		inputData,
 		lang: targetLanguage,
 	});
+
+	result.lines.forEach(element => {
+		var filename = "test.txt";
+		var fs = require('fs');
+
+		if (element.startsWith("//")) {
+			console.log("---------------------------------------");
+			
+			filename = element.substr(3);
+			console.log(filename);
+			
+		} else {
+
+			fs.appendFile(filename, element, function (err) {
+			if (err) return console.log(err);
+				
+			});
+		}
+	});
+	
+
+	return result;
 }
 
-main().then((result) => console.log(result.lines.join("\n")));
+main();
+//main().then((result) => console.log(result.lines.join("\n")));
+
+//-----------------------------------------------------------------------------------------------------------
 
 /**
  * Scans directory for json files and adds them to the schema.
