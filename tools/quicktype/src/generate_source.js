@@ -22,6 +22,12 @@ const basePath = "../../../specs/models/schema/";
  * @returns 
  */
 async function main() {
+
+	//
+	// TODO scan schema folder
+	// Do we want to scan subfolders?
+	//
+
 	const testFolder = basePath + '/shower';
 	const inputData = new InputData();
 
@@ -29,6 +35,12 @@ async function main() {
 
     await addJsonFilesToSchema(inputData, files, testFolder);
 
+	//
+	// TODO Change package with subdir?
+	// for ex:
+	// schema/shower/*.json becomes
+	// nl.contentisbv.zem.models.shower
+	// 
 	const result =  await quicktypeMultiFile({
 		inputData,
 		lang: targetLanguage,
@@ -36,6 +48,11 @@ async function main() {
 	});
 
 	const writes = Array.from(result).map(async ([filename, result]) => {
+
+		// 
+		// TODO change temp to another directory
+		// Proposal: <root>/generated_resources
+		//
 		await writeFile(path.join("./temp", filename), result.lines.join("\n"), "utf-8");
 	});
 	await Promise.all(writes);
