@@ -26,7 +26,7 @@ async function main() {
 
 	const files = await readdir(testFolder);
 
-    await addJsonFIlesToSchema(inputData, files, testFolder);
+    await addJsonFilesToSchema(inputData, files, testFolder);
 
 	return await quicktype({
 		inputData,
@@ -43,7 +43,7 @@ main().then((result) => console.log(result.lines.join("\n")));
  * @param {*} files 
  * @param {*} testFolder 
  */
-async function addJsonFIlesToSchema(inputData, files, testFolder) {
+async function addJsonFilesToSchema(inputData, files, testFolder) {
 	
 	console.log("addJsonFIlesToSchema");
 
