@@ -45,7 +45,7 @@ main().then((result) => console.log(result.lines.join("\n")));
  */
 async function addJsonFilesToSchema(inputData, files, testFolder) {
 	
-	console.log("addJsonFIlesToSchema");
+	console.log("addJsonFilesToSchema");
 
 	const promises = files.filter(jsonExtensionFilter(".json")).map(async function (name) {
 
