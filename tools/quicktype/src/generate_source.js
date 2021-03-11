@@ -12,11 +12,14 @@ const {
   jsonInputForTargetLanguage,
   quicktypeMultiFile,
 } = require("quicktype-core");
+const fs = require("fs");
+
 
 // Config
 const targetLanguage = "Java";
 const basePath = "../../../specs/models/schema/";
 const baseCodePath = "../../../generated-sources/models";
+const languages = ["Java", "Python"];
 
 /**
  * MAIN FUNCTION
@@ -24,19 +27,26 @@ const baseCodePath = "../../../generated-sources/models";
  * @returns
  */
 async function main() {
-  //
-  // TODO scan schema folder
-  // Do we want to scan subfolders?
-  //
 
-  createFolderIfNotExist(baseCodePath);
-  createFolderIfNotExist(path.join(baseCodePath, targetLanguage));
-  createFolderIfNotExist(path.join(baseCodePath, "Python"));
+  createOutputEnvironment();
 
-  return await generateApi("shower");
+  var result = getDirectories(basePath);
+  
+  result.forEach(subFolder => {
+    generateApi(subFolder);    
+  });
+
+  return;
 }
 
 main();
+
+function createOutputEnvironment() {
+  createFolderIfNotExist(baseCodePath);
+  languages.forEach((language) => {
+    createFolderIfNotExist(path.join(baseCodePath, language));
+  });
+}
 
 /**
  * Generate an api for all json files in this subfolder.
@@ -154,10 +164,17 @@ function jsonExtensionFilter(extension) {
  * @param {*} folder
  */
 function createFolderIfNotExist(folder) {
-  const fs = require("fs");
 
   if (!fs.existsSync(folder)) {
     console.log("Creating folder " + folder);
     fs.mkdirSync(folder);
   }
 }
+
+  function getDirectories(path) {
+    return fs.readdirSync(path).filter(function (file) {
+
+      return fs.statSync(path + "/" + file).isDirectory();
+      
+    });
+  }

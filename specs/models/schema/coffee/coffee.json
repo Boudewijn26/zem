@@ -1,0 +1,20 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"type": "object",
+	"$id": "http://nl.contentisbv.zem/schemas/coffee",
+	"properties": {
+		"usage": {
+			"type": "object",
+			"properties": {
+				"milk": {
+					"description": "Do you want milk?",
+					"type": "boolean"
+				},
+				"sugar": {
+					"description": "Do you want sugar?",
+					"type": "boolean"
+				}
+			}
+		}
+	}
+}
