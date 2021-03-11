@@ -11,13 +11,20 @@ const {
   InputData,
   jsonInputForTargetLanguage,
   quicktypeMultiFile,
+  JSONSchemaInput,
+  FetchingJSONSchemaStore,
 } = require("quicktype-core");
 const fs = require("fs");
 
 // Config
 const basePath = "../../../specs/models/schema/";
 const baseCodePath = "../../../generated-sources/models";
-const languages = ["Java", "Python"];
+const languages = ["Java", "Python", "TypeScript"];
+
+const suffices = {
+	"Python": ".py",
+	"TypeScript": ".ts"
+};
 
 /**
  * MAIN FUNCTION
@@ -27,19 +34,13 @@ const languages = ["Java", "Python"];
 async function main() {
   createOutputEnvironment();
 
-  var result = getDirectories(basePath);
+  const result = getDirectories(basePath);
 
-  result.forEach((subFolder) => {
-
-    languages.forEach(language => {
-    
-      generateApi(language, subFolder);  
-      
-    });    
-
-  });
-
-  return;
+  await Promise.all(result.flatMap(async (subFolder) => {
+    return languages.map(async (language) => {
+      await generateApi(language, subFolder);  
+    });
+  }));
 }
 
 main();
@@ -81,7 +82,7 @@ async function generateApi(language, subPath) {
 
   const files = await readdir(inputFolder);
 
-  await addJsonFilesToSchema(inputData, language, files, inputFolder);
+  await addJsonFilesToSchema(inputData, files, inputFolder);
 
   const result = await quicktypeMultiFile({
     inputData,
@@ -90,11 +91,8 @@ async function generateApi(language, subPath) {
   });
 
   const writes = Array.from(result).map(async ([filename, result]) => {
-    // 
-    // TODO Python support -> stdout naar filename (use directory name)
-    //
   if (filename == "stdout") {
-    filename = subPath + ".py";
+    filename = subPath + suffices[language];
   }
 
     await writeFile(
@@ -118,13 +116,16 @@ async function generateApi(language, subPath) {
  * @param {*} files
  * @param {*} testFolder
  */
-async function addJsonFilesToSchema(inputData, language, files, testFolder) {
+async function addJsonFilesToSchema(inputData, files, testFolder) {
   console.log("addJsonFilesToSchema");
 
-  const promises = files
-    .filter(jsonExtensionFilter(".json"))
+  const schemas = files.filter(jsonExtensionFilter(".json"));
+  const mainSchemas = schemas.filter((file) => !file.startsWith("_"));
+  const helpSchemas = schemas.filter((file) => file.startsWith("_")).map((file) => path.join(testFolder, file));
+  console.log(helpSchemas);
+  const promises = mainSchemas
     .map(async function (name) {
-      await addFileToInputSchema(inputData, language, testFolder, name);
+      await addFileToInputSchema(inputData, testFolder, name, helpSchemas);
     });
 
   await Promise.all(promises);
@@ -137,20 +138,15 @@ async function addJsonFilesToSchema(inputData, language, files, testFolder) {
  * @param {*} testFolder
  * @param {*} name
  */
-async function addFileToInputSchema(inputData, language, testFolder, name) {
+
+async function addFileToInputSchema(inputData, testFolder, name, additionalSchemas) {
   console.log("Adding source " + name + " to Quicktype source ");
 
   const filePath = path.join(testFolder, name);
   const result = path.parse(filePath);
 
   const objectName = result.name;
-
-  const schemaData = await readFile(filePath, "utf8");
-
-  const input = jsonInputForTargetLanguage(language);
-  await input.addSource({ name: objectName, samples: [schemaData] });
-
-  inputData.addInput(input);
+  await inputData.addSource("schema", { kind: "schema", name: objectName, uris: [filePath] }, () => new JSONSchemaInput(new FetchingJSONSchemaStore([]), [], additionalSchemas));
 }
 
 /**
