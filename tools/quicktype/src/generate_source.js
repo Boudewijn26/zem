@@ -72,12 +72,6 @@ async function generateApi(language, subPath) {
 
   await addJsonFilesToSchema(inputData, language, files, inputFolder);
 
-  //
-  // TODO Change package with subdir?
-  // for ex:
-  // schema/shower/*.json becomes
-  // nl.contentisbv.zem.models.shower
-  //
   const result = await quicktypeMultiFile({
     inputData,
     lang: language,
@@ -85,15 +79,9 @@ async function generateApi(language, subPath) {
   });
 
   const writes = Array.from(result).map(async ([filename, result]) => {
+    // 
+    // TODO Python support -> stdout naar filename (use directory name)
     //
-    // TODO change temp to another directory
-    // Proposal: <root>/generated_resources
-    //
-
-    //
-    // TODO delete old files.
-    //
-    // Python support -> stdout naar filename (use directory name)
     await writeFile(
       path.join(outputFolder, filename),
       result.lines.join("\n"),
