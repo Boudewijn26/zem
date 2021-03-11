@@ -29,7 +29,7 @@ async function main() {
 
     await addJsonFilesToSchema(inputData, files, testFolder);
 
-	var result =  await quicktypeMultiFile({
+	const result =  await quicktypeMultiFile({
 		inputData,
 		lang: targetLanguage,
 		rendererOptions: { package: "nl.contentisbv.zem.models" }
@@ -79,13 +79,13 @@ async function addFileToInputSchema( inputData, testFolder, name) {
 
 	console.log("Adding source " + name + "to Quicktype source ");
 
-	var filePath = path.join(testFolder, name);
-	var result = path.parse(filePath);
+	const filePath = path.join(testFolder, name);
+	const result = path.parse(filePath);
 
-	var objectName = result.name;
+	const objectName = result.name;
 
 	
-	var schemaData = await readFile(filePath, 'utf8');
+	const schemaData = await readFile(filePath, 'utf8');
 	
 	const input = jsonInputForTargetLanguage(targetLanguage);
 	await input.addSource({ name: objectName, samples: [schemaData] });
