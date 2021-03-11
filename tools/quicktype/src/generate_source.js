@@ -1,16 +1,15 @@
 const path = require('path'); 
 const { promises: { 
-	fs,
 	readFile,
 	readdir,
-	filter,
-	appendFile,
+	writeFile
 } } = require('fs');
 
 const {
 	quicktype,
 	InputData,
 	jsonInputForTargetLanguage,
+	quicktypeMultiFile,
 } = require("quicktype-core");
 
 // Config
@@ -30,30 +29,16 @@ async function main() {
 
     await addJsonFilesToSchema(inputData, files, testFolder);
 
-	var result =  await quicktype({
+	var result =  await quicktypeMultiFile({
 		inputData,
 		lang: targetLanguage,
+		rendererOptions: { package: "nl.contentisbv.zem.models" }
 	});
 
-	console.log(result.lines.join("\n"));
-
-	var filename = "test.txt";
-
-	result.lines.forEach(element => {
-		var fs = require('fs');
-
-		if (element.startsWith("//") && (element.endsWith("java"))) {
-			
-			filename = element.substr(3);
-			
-		} else {
-
-			fs.appendFile("./temp/" + filename, element + "\n", function (err) {
-			if (err) return console.log(err);
-			});
-		}
+	const writes = Array.from(result).map(async ([filename, result]) => {
+		await writeFile(path.join("./temp", filename), result.lines.join("\n"), "utf-8");
 	});
-	
+	await Promise.all(writes);
 
 	return result;
 }
@@ -76,7 +61,7 @@ async function addJsonFilesToSchema(inputData, files, testFolder) {
 
 	const promises = files.filter(jsonExtensionFilter(".json")).map(async function (name) {
 
-		await addFileToInputScheme(inputData, testFolder, name);
+		await addFileToInputSchema(inputData, testFolder, name);
 
 	});
 
@@ -90,7 +75,7 @@ async function addJsonFilesToSchema(inputData, files, testFolder) {
  * @param {*} testFolder 
  * @param {*} name 
  */
-async function addFileToInputScheme( inputData, testFolder, name) {
+async function addFileToInputSchema( inputData, testFolder, name) {
 
 	console.log("Adding source " + name + "to Quicktype source ");
 
