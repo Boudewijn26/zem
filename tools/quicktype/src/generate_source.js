@@ -30,9 +30,13 @@ async function main() {
   var result = getDirectories(basePath);
 
   result.forEach((subFolder) => {
+
     languages.forEach(language => {
+    
       generateApi(language, subFolder);  
+      
     });    
+
   });
 
   return;
@@ -40,7 +44,12 @@ async function main() {
 
 main();
 
+/**
+ * Removes the old generated sources directory and creates 
+ * the structure we need to write files to.
+ */
 function createOutputEnvironment() {
+
   fs.rmdirSync(baseCodePath, { recursive: true });
 
   createFolderIfNotExist(baseCodePath);
@@ -58,10 +67,12 @@ function createOutputEnvironment() {
  * @returns
  */
 async function generateApi(language, subPath) {
+
   const outputFolder = path.join(
     path.join(baseCodePath, language),
     subPath
   );
+
   const inputFolder = basePath + "/" + subPath;
 
   createFolderIfNotExist(outputFolder);
@@ -82,11 +93,16 @@ async function generateApi(language, subPath) {
     // 
     // TODO Python support -> stdout naar filename (use directory name)
     //
+  if (filename == "stdout") {
+    filename = subPath + ".py";
+  }
+
     await writeFile(
       path.join(outputFolder, filename),
       result.lines.join("\n"),
       "utf-8"
     );
+
   });
   await Promise.all(writes);
 
