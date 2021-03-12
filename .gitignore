@@ -1,5 +1,5 @@
 /bin
-/generated-sources/*
 
 tools/quicktype/temp
 
+**/build/*
