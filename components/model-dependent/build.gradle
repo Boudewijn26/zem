@@ -1,0 +1,33 @@
+plugins {
+    id "application"
+}
+
+group = "nl.contentisbv.zem"
+version = "0.0.1-SNAPSHOT"
+java.sourceCompatibility = JavaVersion.VERSION_15
+
+application {
+    mainClass = 'nl.contentisbv.zem.model.dependent.Main'
+}
+
+repositories {
+	mavenCentral()
+	jcenter()
+}
+
+dependencies {
+// tag::app_dependencies[]
+    implementation project(':models')
+// end::app_dependencies[]
+}
+subprojects {
+    apply plugin: 'java'
+}
+
+task generateModels(type: Exec) {
+  workingDir '../../tools/quicktype/src'
+  executable = 'node'
+  args = ["generate_source.js"]
+}
+
+compileJava.dependsOn generateModels

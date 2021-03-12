@@ -3,7 +3,7 @@
  */
 const path = require("path");
 const {
-  promises: { readFile, readdir, writeFile },
+  promises: { readFile, readdir, writeFile, copyFile },
 } = require("fs");
 
 const {
@@ -20,6 +20,12 @@ const fs = require("fs");
 const basePath = "../../../specs/models/schema/";
 const baseCodePath = "../../../generated-sources/models";
 const languages = ["Java", "Python", "TypeScript"];
+const templateBasePath = "./template";
+const srcPaths = {
+	"Java": "src/main/java/nl/contentisbv/zem/models",
+	"Python": "zem_models",
+	"TypeScript": "src"
+};
 
 const suffices = {
 	"Python": ".py",
@@ -50,12 +56,11 @@ main();
  * the structure we need to write files to.
  */
 function createOutputEnvironment() {
-
   fs.rmdirSync(baseCodePath, { recursive: true });
 
   createFolderIfNotExist(baseCodePath);
   languages.forEach((language) => {
-    createFolderIfNotExist(path.join(baseCodePath, language));
+    createFolderIfNotExist(path.join(baseCodePath, language.toLowerCase()));
   });
 }
 
@@ -68,22 +73,21 @@ function createOutputEnvironment() {
  * @returns
  */
 async function generateApi(language, subPath) {
-
+  const languageFolder = path.join(baseCodePath, language.toLowerCase());
   const outputFolder = path.join(
-    path.join(baseCodePath, language),
+    languageFolder,
+	srcPaths[language] ?? "",
     subPath
   );
 
-  const inputFolder = basePath + "/" + subPath;
-
   createFolderIfNotExist(outputFolder);
-
-  const inputData = new InputData();
-
+  
+  const inputFolder = basePath + "/" + subPath;
   const files = await readdir(inputFolder);
-
+  
+  const inputData = new InputData();
   await addJsonFilesToSchema(inputData, files, inputFolder);
-
+  
   const result = await quicktypeMultiFile({
     inputData,
     lang: language,
@@ -91,18 +95,21 @@ async function generateApi(language, subPath) {
   });
 
   const writes = Array.from(result).map(async ([filename, result]) => {
-  if (filename == "stdout") {
-    filename = subPath + suffices[language];
-  }
+    if (filename == "stdout") {
+      filename = subPath + suffices[language];
+    }
 
     await writeFile(
       path.join(outputFolder, filename),
       result.lines.join("\n"),
       "utf-8"
     );
-
   });
   await Promise.all(writes);
+  const templateFiles = await getTemplateFiles(language);
+  await Promise.all(templateFiles.map(async (file) => {
+	await copyFile(path.join(templateBasePath, language, file), path.join(languageFolder, file));
+  }));
 
   return result;
 }
@@ -129,6 +136,15 @@ async function addJsonFilesToSchema(inputData, files, testFolder) {
     });
 
   await Promise.all(promises);
+}
+
+async function getTemplateFiles(language) {
+	const templateDir = path.join(templateBasePath, language.toLowerCase());
+	if (fs.existsSync(templateDir)) {
+		return await readdir(templateDir);
+	} else {
+		return [];
+	}
 }
 
 /**
@@ -167,7 +183,7 @@ function jsonExtensionFilter(extension) {
 function createFolderIfNotExist(folder) {
   if (!fs.existsSync(folder)) {
     console.log("Creating folder " + folder);
-    fs.mkdirSync(folder);
+    fs.mkdirSync(folder, { recursive: true });
   }
 }
 
