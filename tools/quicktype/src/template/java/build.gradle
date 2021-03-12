@@ -2,7 +2,7 @@ plugins {
     id 'java-library'
 }
 
-group = "nl.contentisbv.zem"
+group = "org.foundationzero.zem"
 version = "0.0.1-SNAPSHOT"
 
 repositories {

@@ -2,12 +2,12 @@ plugins {
     id "application"
 }
 
-group = "nl.contentisbv.zem"
+group = "org.foundationzero.zem"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_15
 
 application {
-    mainClass = 'nl.contentisbv.zem.model.dependent.Main'
+    mainClass = 'org.foundationzero.zem.model.dependent.Main'
 }
 
 repositories {

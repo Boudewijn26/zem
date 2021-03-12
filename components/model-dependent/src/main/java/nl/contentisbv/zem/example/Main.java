@@ -1,8 +1,8 @@
-package nl.contentisbv.zem.model.dependent;
+package org.foundationzero.zem.model.dependent;
 
 import java.io.IOException;
-import nl.contentisbv.zem.models.coffee.Coffee;
-import nl.contentisbv.zem.models.coffee.Converter;
+import org.foundationzero.zem.models.coffee.Coffee;
+import org.foundationzero.zem.models.coffee.Converter;
 
 public class Main {
     public static void main(String[] args) throws IOException {

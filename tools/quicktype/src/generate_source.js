@@ -22,7 +22,7 @@ const baseCodePath = "../../../generated-sources/models";
 const languages = ["Java", "Python", "TypeScript"];
 const templateBasePath = "./template";
 const srcPaths = {
-	"Java": "src/main/java/nl/contentisbv/zem/models",
+	"Java": "src/main/java/org/foundationzero/zem/models",
 	"Python": "zem_models",
 	"TypeScript": "src"
 };
@@ -91,7 +91,7 @@ async function generateApi(language, subPath) {
   const result = await quicktypeMultiFile({
     inputData,
     lang: language,
-    rendererOptions: { package: "nl.contentisbv.zem.models." + subPath },
+    rendererOptions: { package: "org.foundationzero.zem.models." + subPath },
   });
 
   const writes = Array.from(result).map(async ([filename, result]) => {

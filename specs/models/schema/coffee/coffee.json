@@ -1,7 +1,7 @@
 {
 	"$schema": "http://json-schema.org/draft-04/schema#",
 	"type": "object",
-	"$id": "http://nl.contentisbv.zem/schemas/coffee",
+	"$id": "http://org.foundationzero.zem/schemas/coffee",
 	"properties": {
 		"usage": {
 			"type": "object",

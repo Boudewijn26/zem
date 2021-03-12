@@ -11,7 +11,7 @@
 		"usages": {
       		"type": "array",
       		"items": {             
-      			"$ref": "http://nl.contentisbv.zem/schemas/usage"
+      			"$ref": "http://org.foundationzero.zem/schemas/usage"
   			}
   		}
     }
