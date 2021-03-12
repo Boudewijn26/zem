@@ -11,6 +11,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Miriam van Soest",
+  "author": "Miriam van Soest/Boudewijn van Groos",
   "license": "ISC"
 }
