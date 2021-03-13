@@ -1,4 +1,5 @@
 steps:
   - name: "gcr.io/cloud-builders/gradle"
     dir: ./components/model-dependant/
-    args: ["build"]
+    entrypoint: 'gradle-build'
+      args: ['build']
