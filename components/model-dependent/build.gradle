@@ -4,7 +4,9 @@ plugins {
 
 group = "org.foundationzero.zem"
 version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_1_8
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 application {
     mainClass = 'org.foundationzero.zem.model.dependent.Main'
