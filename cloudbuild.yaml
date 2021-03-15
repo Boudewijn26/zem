@@ -1,4 +1,9 @@
 steps:
+<<<<<<< Updated upstream
   - name: "gcr.io/cloud-builders/gradle"
     dir: './components/model-dependent'
     args: ["build"]
+=======
+  - name: "gradle:6.8.3-jdk15"
+    args: ['--project-dir=components\model-dependent', "build"]
+>>>>>>> Stashed changes
