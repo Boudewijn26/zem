@@ -1,4 +1,5 @@
 steps:
   - name: "gradle:6.8.3-jdk15"  
+    entrypoint: 'gradle'
     dir: './components/model-dependent'
     args: ["build"]
