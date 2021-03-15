@@ -108,7 +108,7 @@ async function generateApi(language, subPath) {
   await Promise.all(writes);
   const templateFiles = await getTemplateFiles(language);
   await Promise.all(templateFiles.map(async (file) => {
-	await copyFile(path.join(templateBasePath, language, file), path.join(languageFolder, file));
+	await copyFile(path.join(templateBasePath, language.toLowerCase(), file), path.join(languageFolder, file));
   }));
 
   return result;
