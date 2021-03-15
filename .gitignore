@@ -3,5 +3,4 @@
 tools/quicktype/temp
 
 **/build/*
-generated-sources/models/java/.project
 components/model-dependent/.project
