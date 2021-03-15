@@ -22,14 +22,14 @@ const baseCodePath = "../../../generated-sources/models";
 const languages = ["Java", "Python", "TypeScript"];
 const templateBasePath = "./template";
 const srcPaths = {
-	"Java": "src/main/java/org/foundationzero/zem/models",
-	"Python": "zem_models",
-	"TypeScript": "src"
+  Java: "src/main/java/org/foundationzero/zem/models",
+  Python: "zem_models",
+  TypeScript: "src",
 };
 
 const suffices = {
-	"Python": ".py",
-	"TypeScript": ".ts"
+  Python: ".py",
+  TypeScript: ".ts",
 };
 
 /**
@@ -42,17 +42,19 @@ async function main() {
 
   const result = getDirectories(basePath);
 
-  await Promise.all(result.flatMap(async (subFolder) => {
-    return languages.map(async (language) => {
-      await generateApi(language, subFolder);  
-    });
-  }));
+  await Promise.all(
+    result.flatMap(async (subFolder) => {
+      return languages.map(async (language) => {
+        await generateApi(language, subFolder);
+      });
+    })
+  );
 }
 
 main();
 
 /**
- * Removes the old generated sources directory and creates 
+ * Removes the old generated sources directory and creates
  * the structure we need to write files to.
  */
 function createOutputEnvironment() {
@@ -74,20 +76,16 @@ function createOutputEnvironment() {
  */
 async function generateApi(language, subPath) {
   const languageFolder = path.join(baseCodePath, language.toLowerCase());
-  const outputFolder = path.join(
-    languageFolder,
-	srcPaths[language] ?? "",
-    subPath
-  );
+  const outputFolder = path.join(languageFolder, srcPaths[language] ?? "", subPath);
 
   createFolderIfNotExist(outputFolder);
-  
+
   const inputFolder = basePath + "/" + subPath;
   const files = await readdir(inputFolder);
-  
+
   const inputData = new InputData();
   await addJsonFilesToSchema(inputData, files, inputFolder);
-  
+
   const result = await quicktypeMultiFile({
     inputData,
     lang: language,
@@ -99,17 +97,15 @@ async function generateApi(language, subPath) {
       filename = subPath + suffices[language];
     }
 
-    await writeFile(
-      path.join(outputFolder, filename),
-      result.lines.join("\n"),
-      "utf-8"
-    );
+    await writeFile(path.join(outputFolder, filename), result.lines.join("\n"), "utf-8");
   });
   await Promise.all(writes);
   const templateFiles = await getTemplateFiles(language);
-  await Promise.all(templateFiles.map(async (file) => {
-	await copyFile(path.join(templateBasePath, language.toLowerCase(), file), path.join(languageFolder, file));
-  }));
+  await Promise.all(
+    templateFiles.map(async (file) => {
+      await copyFile(path.join(templateBasePath, language.toLowerCase(), file), path.join(languageFolder, file));
+    })
+  );
 
   return result;
 }
@@ -130,21 +126,20 @@ async function addJsonFilesToSchema(inputData, files, testFolder) {
   const mainSchemas = schemas.filter((file) => !file.startsWith("_"));
   const helpSchemas = schemas.filter((file) => file.startsWith("_")).map((file) => path.join(testFolder, file));
   console.log(helpSchemas);
-  const promises = mainSchemas
-    .map(async function (name) {
-      await addFileToInputSchema(inputData, testFolder, name, helpSchemas);
-    });
+  const promises = mainSchemas.map(async function (name) {
+    await addFileToInputSchema(inputData, testFolder, name, helpSchemas);
+  });
 
   await Promise.all(promises);
 }
 
 async function getTemplateFiles(language) {
-	const templateDir = path.join(templateBasePath, language.toLowerCase());
-	if (fs.existsSync(templateDir)) {
-		return await readdir(templateDir);
-	} else {
-		return [];
-	}
+  const templateDir = path.join(templateBasePath, language.toLowerCase());
+  if (fs.existsSync(templateDir)) {
+    return await readdir(templateDir);
+  } else {
+    return [];
+  }
 }
 
 /**
@@ -162,7 +157,11 @@ async function addFileToInputSchema(inputData, testFolder, name, additionalSchem
   const result = path.parse(filePath);
 
   const objectName = result.name;
-  await inputData.addSource("schema", { kind: "schema", name: objectName, uris: [filePath] }, () => new JSONSchemaInput(new FetchingJSONSchemaStore([]), [], additionalSchemas));
+  await inputData.addSource(
+    "schema",
+    { kind: "schema", name: objectName, uris: [filePath] },
+    () => new JSONSchemaInput(new FetchingJSONSchemaStore([]), [], additionalSchemas)
+  );
 }
 
 /**

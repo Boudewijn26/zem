@@ -7,9 +7,13 @@
     "quicktype": "^15.0.260",
     "quicktype-core": "^6.0.70"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "prettier": "^2.2.1"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "npx prettier --check 'generate_source.js'",
+    "lint:fix": "npx prettier --write 'generate_source.js'"
   },
   "author": "Miriam van Soest/Boudewijn van Groos",
   "license": "ISC"
