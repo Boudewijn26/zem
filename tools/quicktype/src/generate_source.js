@@ -138,7 +138,7 @@ async function getTemplateFiles(language) {
   if (fs.existsSync(templateDir)) {
     return await readdir(templateDir);
   } else {
-    return []
+    return [];
   }
 }
 
