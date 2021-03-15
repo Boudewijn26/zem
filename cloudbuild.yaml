@@ -4,6 +4,6 @@ steps:
     dir: './components/model-dependent'
     args: ["build"]
   - name: "gcr.io/code-zero-zem/builder"
-    entrypoint: npm
+    entrypoint: "npm"
     dir: './tools/quicktype/src'
     args: ["run", "lint"]
