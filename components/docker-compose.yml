@@ -9,3 +9,22 @@ services:
       - "8086:8086"
     volumes:
       - ./influxdb/data:/var/lib/influxdb2
+
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: wurstmeister/kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'false'
+      KAFKA_ADVERTISED_HOST_NAME: 127.0.0.1   # only for local testing, cannot scale
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181 
+    volumes:
+      - ./kafka/data:/kafka
+    depends_on:
+      - zookeeper
+
