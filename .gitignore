@@ -4,3 +4,5 @@ tools/quicktype/temp
 
 **/build/*
 components/model-dependent/.project
+
+components/influxdb/data
