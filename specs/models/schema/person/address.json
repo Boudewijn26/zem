@@ -1,0 +1,33 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"type": "object",
+	"$id": "http://org.foundationzero.zem/schemas/address",
+	"description": "Represents an address",
+	"properties": {
+		"usage": {
+			"type": "object",
+			"properties": {
+				"street": {
+					"description": "Street name",
+					"type": "string"
+				},
+				"Number": {
+					"description": "House number",
+					"type": "int"
+				},				
+				"Additional": {
+					"description": "Additional information house number",
+					"type":"string"
+				},
+				"City": {
+					"description": "City",
+					"type":"string"
+				},
+				"Country": {
+					"description": "Country",
+					"type":"string"
+				}
+			}
+		}
+	}
+}

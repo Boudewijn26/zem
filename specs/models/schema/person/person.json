@@ -1,0 +1,30 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"type": "object",
+	"$id": "http://org.foundationzero.zem/schemas/person",
+	"description": "Represents a person",
+	"properties": {
+		"usage": {
+			"type": "object",
+			"properties": {
+				"last_name": {
+					"description": "Last name",
+					"type": "string"
+				},
+				"first_name": {
+					"description": "First name",
+					"type": "string"
+				},				
+				"birth_date": {
+					"description": "Birth day",
+					"type":"string",
+					"pattern": "^[0-9][0-9]-[0-9][0-9]-(19|20)[0-9][0-9]$"
+				},
+				"address" :{
+					"description": "Address",
+					"$ref": "http://org.foundationzero.zem/schemas/address"
+				}
+			}
+		}
+	}
+}
