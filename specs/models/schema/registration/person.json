@@ -1,0 +1,52 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"type": "object",
+	"$id": "http://org.foundationzero.zem/schemas/person",
+	"$description": "Represents a person",
+	"properties": {
+		"last_name": {
+			"description": "Last name",
+			"type": "string"
+		},
+		"first_name": {
+			"description": "First name",
+			"type": "string"
+		},				
+		"birth_date": {
+			"description": "Birth day",
+			"type":"string"
+		},
+		"address": {
+			"description": "Address",
+			"$ref": "#address"
+		}
+	},
+	"definitions": {
+		"address": {
+			"$id": "#address",
+			"type": "object",
+			"properties": {
+				"street": {
+					"description": "Street name",
+					"type": "string"
+				},
+				"Number": {
+					"description": "House number",
+					"type": "integer"
+				},				
+				"Additional": {
+					"description": "Additional information house number",
+					"type":"string"
+				},
+				"City": {
+					"description": "City",
+					"type":"string"
+				},
+				"Country": {
+					"description": "Country",
+					"type":"string"
+				}
+			}
+		}
+	}
+}
