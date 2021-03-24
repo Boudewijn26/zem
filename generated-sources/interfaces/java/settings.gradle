@@ -7,8 +7,5 @@
  * in the user manual at https://docs.gradle.org/6.8.3/userguide/multi_project_builds.html
  */
 
-rootProject.name = 'model-dependent'
 include ":models"
-include ":interfaces"
-project(":interfaces").projectDir = file("../../generated-sources/interfaces/java")
-project(":models").projectDir = file("../../generated-sources/models/java")
+project(":models").projectDir = file("../../models/java")

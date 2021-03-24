@@ -99,17 +99,17 @@ class UsageUsage:
         return result
 
 
-class Usage:
+class UsageElement:
     usage: Optional[UsageUsage]
 
     def __init__(self, usage: Optional[UsageUsage]) -> None:
         self.usage = usage
 
     @staticmethod
-    def from_dict(obj: Any) -> 'Usage':
+    def from_dict(obj: Any) -> 'UsageElement':
         assert isinstance(obj, dict)
         usage = from_union([UsageUsage.from_dict, from_none], obj.get("usage"))
-        return Usage(usage)
+        return UsageElement(usage)
 
     def to_dict(self) -> dict:
         result: dict = {}
@@ -118,39 +118,39 @@ class Usage:
 
 
 class CurrentUsageClass:
-    current_usage: Optional[Usage]
+    current_usage: Optional[UsageElement]
 
-    def __init__(self, current_usage: Optional[Usage]) -> None:
+    def __init__(self, current_usage: Optional[UsageElement]) -> None:
         self.current_usage = current_usage
 
     @staticmethod
     def from_dict(obj: Any) -> 'CurrentUsageClass':
         assert isinstance(obj, dict)
-        current_usage = from_union([Usage.from_dict, from_none], obj.get("current_usage"))
+        current_usage = from_union([UsageElement.from_dict, from_none], obj.get("current_usage"))
         return CurrentUsageClass(current_usage)
 
     def to_dict(self) -> dict:
         result: dict = {}
-        result["current_usage"] = from_union([lambda x: to_class(Usage, x), from_none], self.current_usage)
+        result["current_usage"] = from_union([lambda x: to_class(UsageElement, x), from_none], self.current_usage)
         return result
 
 
 class PredictedUsage:
     """The predicted usage of the shower"""
-    usages: List[Usage]
+    usages: List[UsageElement]
 
-    def __init__(self, usages: List[Usage]) -> None:
+    def __init__(self, usages: List[UsageElement]) -> None:
         self.usages = usages
 
     @staticmethod
     def from_dict(obj: Any) -> 'PredictedUsage':
         assert isinstance(obj, dict)
-        usages = from_list(Usage.from_dict, obj.get("usages"))
+        usages = from_list(UsageElement.from_dict, obj.get("usages"))
         return PredictedUsage(usages)
 
     def to_dict(self) -> dict:
         result: dict = {}
-        result["usages"] = from_list(lambda x: to_class(Usage, x), self.usages)
+        result["usages"] = from_list(lambda x: to_class(UsageElement, x), self.usages)
         return result
 
 

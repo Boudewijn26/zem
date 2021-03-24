@@ -19,6 +19,7 @@ repositories {
 dependencies {
 // tag::app_dependencies[]
     implementation project(':models')
+    implementation project(':interfaces')
 // end::app_dependencies[]
 }
 subprojects {

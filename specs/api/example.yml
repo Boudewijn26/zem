@@ -1,0 +1,54 @@
+asyncapi: '2.0.0'
+info:
+  title: Streetlights API
+  version: 'v1'
+  description: |
+    The Smartylighting Streetlights API allows you
+    to remotely manage the city lights.
+  license:
+    name: Apache 2.0
+    url: 'https://www.apache.org/licenses/LICENSE-2.0'
+  x-java-package: org.foundationzero.zem.kafka
+
+servers:
+  production:
+    url: kafka.bootstrap:{port}
+    protocol: kafka
+    variables:
+      port:
+        default: '9092'
+        enum:
+          - '9092'
+          - '9093'
+
+channels:
+  event.lighting.measured:
+    publish:
+      bindings:
+        kafka:
+          groupId: my-group
+      operationId: readLightMeasurement
+      message:
+        $ref: '#/components/messages/lightMeasured'
+      x-scs-function-name: processLight
+    subscribe:
+      operationId: updateLightMeasurement
+      message:
+        $ref: '#/components/messages/lightMeasured'
+      x-scs-function-name: processLight
+  event.lighting.registered:
+    subscribe:
+      operationId: readLightRegister
+      message:
+        $ref: '#/components/messages/lightMeasured'
+      x-scs-function-name: processLight
+components:
+  messages:
+    lightMeasured:
+      summary: Inform about environmental lighting conditions for a particular streetlight.
+      payload:
+        $ref: "#/components/schemas/lightMeasuredPayload"
+  schemas:
+    lightMeasuredPayload:
+      x-generated-model: "coffee/Coffee"
+      $ref: "../models/schema/coffee/coffee.json"

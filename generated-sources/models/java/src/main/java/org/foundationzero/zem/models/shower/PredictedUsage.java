@@ -6,10 +6,10 @@ import com.fasterxml.jackson.annotation.*;
  * The predicted usage of the shower
  */
 public class PredictedUsage {
-    private Usage[] usages;
+    private UsageElement[] usages;
 
     @JsonProperty("usages")
-    public Usage[] getUsages() { return usages; }
+    public UsageElement[] getUsages() { return usages; }
     @JsonProperty("usages")
-    public void setUsages(Usage[] value) { this.usages = value; }
+    public void setUsages(UsageElement[] value) { this.usages = value; }
 }

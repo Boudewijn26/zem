@@ -3,10 +3,10 @@ package org.foundationzero.zem.models.shower;
 import com.fasterxml.jackson.annotation.*;
 
 public class CurrentUsageClass {
-    private Usage currentUsage;
+    private UsageElement currentUsage;
 
     @JsonProperty("current_usage")
-    public Usage getCurrentUsage() { return currentUsage; }
+    public UsageElement getCurrentUsage() { return currentUsage; }
     @JsonProperty("current_usage")
-    public void setCurrentUsage(Usage value) { this.currentUsage = value; }
+    public void setCurrentUsage(UsageElement value) { this.currentUsage = value; }
 }

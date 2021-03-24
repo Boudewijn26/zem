@@ -9,10 +9,10 @@
 // match the expected interface, even if the JSON is valid.
 
 export interface CurrentUsageObject {
-    current_usage?: Usage;
+    current_usage?: CurrentUsageElement;
 }
 
-export interface Usage {
+export interface CurrentUsageElement {
     usage?: CurrentUsageUsage;
 }
 
@@ -39,7 +39,7 @@ export enum Unit {
  * The predicted usage of the shower
  */
 export interface PredictedUsage {
-    usages: Usage[];
+    usages: CurrentUsageElement[];
 }
 
 // Converts JSON strings to/from your types
@@ -196,9 +196,9 @@ function r(name: string) {
 
 const typeMap: any = {
     "CurrentUsageObject": o([
-        { json: "current_usage", js: "current_usage", typ: u(undefined, r("Usage")) },
+        { json: "current_usage", js: "current_usage", typ: u(undefined, r("CurrentUsageElement")) },
     ], "any"),
-    "Usage": o([
+    "CurrentUsageElement": o([
         { json: "usage", js: "usage", typ: u(undefined, r("CurrentUsageUsage")) },
     ], "any"),
     "CurrentUsageUsage": o([
@@ -206,7 +206,7 @@ const typeMap: any = {
         { json: "value", js: "value", typ: u(undefined, 3.14) },
     ], "any"),
     "PredictedUsage": o([
-        { json: "usages", js: "usages", typ: a(r("Usage")) },
+        { json: "usages", js: "usages", typ: a(r("CurrentUsageElement")) },
     ], "any"),
     "Unit": [
         "Joules",
