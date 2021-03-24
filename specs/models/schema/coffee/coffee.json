@@ -3,7 +3,7 @@
 	"type": "object",
 	"$id": "http://org.foundationzero.zem/schemas/coffee",
 	"properties": {
-		"usage": {
+		"coffee": {
 			"type": "object",
 			"properties": {
 				"milk": {
