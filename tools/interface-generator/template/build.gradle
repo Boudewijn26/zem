@@ -14,3 +14,18 @@ dependencies {
     api group: "org.apache.kafka", name: "kafka-streams", version: "2.7.0"
     implementation project(":models")
 }
+
+task generateSpecs {
+  FileTree specs = fileTree(dir: "../../specs/api").matching {
+    include "*.yml"
+  }
+  specs.each { f ->
+    exec {
+      executable "npx"
+      args "ag -o ../../generated-sources/interfaces/java ${f} ../../tools/interface-generator/ --force-write"
+      workingDir
+    }
+  }
+}
+
+compileJava.dependsOn generateSpecs

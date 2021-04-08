@@ -3,10 +3,10 @@ package org.foundationzero.zem.models.coffee;
 import com.fasterxml.jackson.annotation.*;
 
 public class Coffee {
-    private Usage usage;
+    private CoffeeClass coffee;
 
-    @JsonProperty("usage")
-    public Usage getUsage() { return usage; }
-    @JsonProperty("usage")
-    public void setUsage(Usage value) { this.usage = value; }
+    @JsonProperty("coffee")
+    public CoffeeClass getCoffee() { return coffee; }
+    @JsonProperty("coffee")
+    public void setCoffee(CoffeeClass value) { this.coffee = value; }
 }

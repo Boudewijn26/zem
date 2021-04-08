@@ -1,36 +1,66 @@
 // To parse this data:
 //
-//   import { Convert, Coffee } from "./file";
+//   import { Convert, Person } from "./file";
 //
-//   const coffee = Convert.toCoffee(json);
+//   const person = Convert.toPerson(json);
 //
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
 
-export interface Coffee {
-    coffee?: CoffeeObject;
+export interface Person {
+    /**
+     * Address
+     */
+    address?: Address;
+    /**
+     * Birth day
+     */
+    birth_date?: string;
+    /**
+     * First name
+     */
+    first_name?: string;
+    /**
+     * Last name
+     */
+    last_name?: string;
 }
 
-export interface CoffeeObject {
+/**
+ * Address
+ */
+export interface Address {
     /**
-     * Do you want milk?
+     * Additional information house number
      */
-    milk?: boolean;
+    Additional?: string;
     /**
-     * Do you want sugar?
+     * City
      */
-    sugar?: boolean;
+    City?: string;
+    /**
+     * Country
+     */
+    Country?: string;
+    /**
+     * House number
+     */
+    Number?: number;
+    /**
+     * Street name
+     */
+    street?: string;
 }
 
 // Converts JSON strings to/from your types
 // and asserts the results of JSON.parse at runtime
 export class Convert {
-    public static toCoffee(json: string): Coffee {
-        return cast(JSON.parse(json), r("Coffee"));
+    public static toPerson(json: string): Person {
+        return cast(JSON.parse(json), r("Person"));
     }
 
-    public static coffeeToJson(value: Coffee): string {
-        return JSON.stringify(uncast(value, r("Coffee")), null, 2);
+    public static personToJson(value: Person): string {
+        return JSON.stringify(uncast(value, r("Person")), null, 2);
     }
 }
 
@@ -167,11 +197,17 @@ function r(name: string) {
 }
 
 const typeMap: any = {
-    "Coffee": o([
-        { json: "coffee", js: "coffee", typ: u(undefined, r("CoffeeObject")) },
+    "Person": o([
+        { json: "address", js: "address", typ: u(undefined, r("Address")) },
+        { json: "birth_date", js: "birth_date", typ: u(undefined, "") },
+        { json: "first_name", js: "first_name", typ: u(undefined, "") },
+        { json: "last_name", js: "last_name", typ: u(undefined, "") },
     ], "any"),
-    "CoffeeObject": o([
-        { json: "milk", js: "milk", typ: u(undefined, true) },
-        { json: "sugar", js: "sugar", typ: u(undefined, true) },
+    "Address": o([
+        { json: "Additional", js: "Additional", typ: u(undefined, "") },
+        { json: "City", js: "City", typ: u(undefined, "") },
+        { json: "Country", js: "Country", typ: u(undefined, "") },
+        { json: "Number", js: "Number", typ: u(undefined, 0) },
+        { json: "street", js: "street", typ: u(undefined, "") },
     ], "any"),
 };

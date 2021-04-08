@@ -8,3 +8,4 @@ components/model-dependent/.project
 components/influxdb/data
 components/kafka/data/
 **/.gradle
+*.iml

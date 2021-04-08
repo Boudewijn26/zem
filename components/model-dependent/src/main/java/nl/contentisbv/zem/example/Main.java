@@ -3,18 +3,25 @@ package org.foundationzero.zem.model.dependent;
 import java.io.IOException;
 import org.apache.kafka.streams.kstream.KStream;
 import org.foundationzero.zem.models.coffee.Coffee;
+import org.foundationzero.zem.models.registration.Person;
 import org.foundationzero.zem.models.coffee.Converter;
-import org.foundationzero.zem.kafka.v1.ProcessLight;
-import java.util.function.BiFunction;
+import org.foundationzero.zem.kafka.v1.RegisterPerson;
+import java.util.function.Function;
+import org.springframework.context.annotation.Bean;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.SpringApplication;
 
-public class Main implements ProcessLight {
-    public static void main(String[] args) throws IOException {
-        Coffee coffee = Converter.fromJsonString("{ \"usage\": { \"milk\": true, \"sugar\": true } }");
-        System.out.println("Milk: " + coffee.getUsage().getMilk().toString());
+@SpringBootApplication
+public class Main implements RegisterPerson {
+    public static void main(String[] args) {
+      SpringApplication.run(Main.class, args);
     }
 
+    @Bean
     @Override
-    public BiFunction<KStream<String, Coffee>, KStream<String, Coffee>, KStream<String, Coffee>> processLight() {
-      return null;
+    public Function<KStream<String, Person>, KStream<String, Person>> registerPerson() {
+      return (input) -> input.mapValues((a) -> {
+        return a;
+      });
     }
 }

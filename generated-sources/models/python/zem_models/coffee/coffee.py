@@ -36,7 +36,7 @@ def to_class(c: Type[T], x: Any) -> dict:
     return cast(Any, x).to_dict()
 
 
-class Usage:
+class CoffeeClass:
     """Do you want milk?"""
     milk: Optional[bool]
     """Do you want sugar?"""
@@ -47,11 +47,11 @@ class Usage:
         self.sugar = sugar
 
     @staticmethod
-    def from_dict(obj: Any) -> 'Usage':
+    def from_dict(obj: Any) -> 'CoffeeClass':
         assert isinstance(obj, dict)
         milk = from_union([from_bool, from_none], obj.get("milk"))
         sugar = from_union([from_bool, from_none], obj.get("sugar"))
-        return Usage(milk, sugar)
+        return CoffeeClass(milk, sugar)
 
     def to_dict(self) -> dict:
         result: dict = {}
@@ -61,20 +61,20 @@ class Usage:
 
 
 class Coffee:
-    usage: Optional[Usage]
+    coffee: Optional[CoffeeClass]
 
-    def __init__(self, usage: Optional[Usage]) -> None:
-        self.usage = usage
+    def __init__(self, coffee: Optional[CoffeeClass]) -> None:
+        self.coffee = coffee
 
     @staticmethod
     def from_dict(obj: Any) -> 'Coffee':
         assert isinstance(obj, dict)
-        usage = from_union([Usage.from_dict, from_none], obj.get("usage"))
-        return Coffee(usage)
+        coffee = from_union([CoffeeClass.from_dict, from_none], obj.get("coffee"))
+        return Coffee(coffee)
 
     def to_dict(self) -> dict:
         result: dict = {}
-        result["usage"] = from_union([lambda x: to_class(Usage, x), from_none], self.usage)
+        result["coffee"] = from_union([lambda x: to_class(CoffeeClass, x), from_none], self.coffee)
         return result
 
 

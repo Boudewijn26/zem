@@ -2,7 +2,7 @@ package org.foundationzero.zem.models.coffee;
 
 import com.fasterxml.jackson.annotation.*;
 
-public class Usage {
+public class CoffeeClass {
     private Boolean milk;
     private Boolean sugar;
 

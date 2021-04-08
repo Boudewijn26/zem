@@ -1,0 +1,44 @@
+asyncapi: '2.0.0'
+info:
+  title: Person registration API
+  version: 'v1'
+  description: |
+    The API responsible for registering persons
+  x-java-package: org.foundationzero.zem.kafka
+
+servers:
+  production:
+    url: kafka.bootstrap:{port}
+    protocol: kafka
+    variables:
+      port:
+        default: '9092'
+        enum:
+          - '9092'
+          - '9093'
+
+channels:
+  event.person.registered:
+    subscribe:
+      message:
+        $ref: '#/components/messages/personRegistered'
+      x-scs-function-name: registerPerson
+  event.person.confirmed:
+    publish:
+      message:
+        $ref: '#/components/messages/personConfirmed'
+      x-scs-function-name: registerPerson
+components:
+  messages:
+    personRegistered:
+      summary: Person was registered
+      payload:
+        $ref: "#/components/schemas/personPayload"
+    personConfirmed:
+      summary: Person was confirmed
+      payload:
+        $ref: "#/components/schemas/personPayload"
+  schemas:
+    personPayload:
+      x-generated-model: "registration/Person"
+      $ref: "../models/schema/registration/person.json"

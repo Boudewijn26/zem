@@ -1,0 +1,8 @@
+spring:
+  cloud:
+    stream:
+      bindings:
+        registerPerson-in-0:
+          destination: register
+        registerPerson-out-0:
+          destination: confirmed
