@@ -1,0 +1,23 @@
+spring:
+  cloud:
+    function:
+      definition: personReceiver;personStreamReceiver
+    stream:
+      bindings:
+        personReceiver-in-0:
+          destination: register
+        personStreamReceiver-in-0:
+          destination: register
+
+      kafka:
+        streams:
+          bindings:
+            personReceiver-in-0:
+              consumer:
+                materializedAs: person-store
+graphql:
+  packages:
+    - "org.foundationzero.zem.graphql"
+    - "org.foundationzero.zem.models.registration"
+    - "java.time"
+    - "kotlin"

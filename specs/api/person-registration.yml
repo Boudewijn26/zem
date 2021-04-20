@@ -18,24 +18,16 @@ servers:
           - '9093'
 
 channels:
-  event.person.registered:
+  event.person:
     subscribe:
       message:
-        $ref: '#/components/messages/personRegistered'
-      x-scs-function-name: registerPerson
-  event.person.confirmed:
-    publish:
-      message:
-        $ref: '#/components/messages/personConfirmed'
-      x-scs-function-name: registerPerson
+        $ref: '#/components/messages/person'
+      x-scs-function-name: personReceiver
+      x-scs-receive-type: GlobalKTable
 components:
   messages:
-    personRegistered:
+    person:
       summary: Person was registered
-      payload:
-        $ref: "#/components/schemas/personPayload"
-    personConfirmed:
-      summary: Person was confirmed
       payload:
         $ref: "#/components/schemas/personPayload"
   schemas:

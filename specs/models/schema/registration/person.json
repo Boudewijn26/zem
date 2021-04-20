@@ -3,23 +3,36 @@
 	"type": "object",
 	"$id": "http://org.foundationzero.zem/schemas/person",
 	"$description": "Represents a person",
+  "version": 0,
 	"properties": {
-		"last_name": {
+    "id": {
+      "description": "Id",
+      "type": "string",
+      "primary": true
+    },
+		"lastName": {
 			"description": "Last name",
 			"type": "string"
 		},
-		"first_name": {
+		"firstName": {
 			"description": "First name",
 			"type": "string"
-		},				
-		"birth_date": {
-			"description": "Birth day",
-			"type":"string"
 		},
-		"address": {
-			"description": "Address",
-			"$ref": "#address"
-		}
+		"birthDate": {
+			"description": "Birth day",
+			"type": "string",
+      "format": "date"
+		},
+    "updatedAt": {
+      "description": "Last update",
+      "type": "string",
+      "format": "date-time"
+    },
+    "isDeleted": {
+      "description": "Whether the record is deleted",
+      "type": "boolean",
+      "default": false
+    }
 	},
 	"definitions": {
 		"address": {
@@ -33,7 +46,7 @@
 				"Number": {
 					"description": "House number",
 					"type": "integer"
-				},				
+				},
 				"Additional": {
 					"description": "Additional information house number",
 					"type":"string"
@@ -48,5 +61,6 @@
 				}
 			}
 		}
-	}
+	},
+  "required": ["updatedAt"]
 }

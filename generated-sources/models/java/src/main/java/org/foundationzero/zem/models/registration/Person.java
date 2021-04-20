@@ -1,12 +1,17 @@
 package org.foundationzero.zem.models.registration;
 
 import com.fasterxml.jackson.annotation.*;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
 
 public class Person {
     private Address address;
-    private String birthDate;
+    private LocalDate birthDate;
     private String firstName;
+    private String id;
+    private boolean isDeleted;
     private String lastName;
+    private OffsetDateTime updatedAt;
 
     /**
      * Address
@@ -19,24 +24,48 @@ public class Person {
     /**
      * Birth day
      */
-    @JsonProperty("birth_date")
-    public String getBirthDate() { return birthDate; }
-    @JsonProperty("birth_date")
-    public void setBirthDate(String value) { this.birthDate = value; }
+    @JsonProperty("birthDate")
+    public LocalDate getBirthDate() { return birthDate; }
+    @JsonProperty("birthDate")
+    public void setBirthDate(LocalDate value) { this.birthDate = value; }
 
     /**
      * First name
      */
-    @JsonProperty("first_name")
+    @JsonProperty("firstName")
     public String getFirstName() { return firstName; }
-    @JsonProperty("first_name")
+    @JsonProperty("firstName")
     public void setFirstName(String value) { this.firstName = value; }
+
+    /**
+     * Id
+     */
+    @JsonProperty("id")
+    public String getID() { return id; }
+    @JsonProperty("id")
+    public void setID(String value) { this.id = value; }
+
+    /**
+     * Whether the record is deleted
+     */
+    @JsonProperty("isDeleted")
+    public boolean getIsDeleted() { return isDeleted; }
+    @JsonProperty("isDeleted")
+    public void setIsDeleted(boolean value) { this.isDeleted = value; }
 
     /**
      * Last name
      */
-    @JsonProperty("last_name")
+    @JsonProperty("lastName")
     public String getLastName() { return lastName; }
-    @JsonProperty("last_name")
+    @JsonProperty("lastName")
     public void setLastName(String value) { this.lastName = value; }
+
+    /**
+     * Last update
+     */
+    @JsonProperty("updatedAt")
+    public OffsetDateTime getUpdatedAt() { return updatedAt; }
+    @JsonProperty("updatedAt")
+    public void setUpdatedAt(OffsetDateTime value) { this.updatedAt = value; }
 }

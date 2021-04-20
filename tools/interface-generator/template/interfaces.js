@@ -38,9 +38,8 @@ export default function({ asyncapi, params, originalAsyncAPI }) {
       <Text newLines={2}>
         package {javaPackage({ asyncapi, params })};
       </Text>
-      <Text newLines={2}>
-        import org.apache.kafka.streams.kstream.KStream;
-      </Text>
+      {spec.receiveTypes.map((type) => <Text key={type}>import org.apache.kafka.streams.kstream.{type};</Text>)}
+      <Text />
       <Text newLines={2}>
         import java.util.function.{spec.returnType};
       </Text>

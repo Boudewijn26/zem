@@ -15,15 +15,27 @@ export interface Person {
     /**
      * Birth day
      */
-    birth_date?: string;
+    birthDate?: Date;
     /**
      * First name
      */
-    first_name?: string;
+    firstName?: string;
+    /**
+     * Id
+     */
+    id?: string;
+    /**
+     * Whether the record is deleted
+     */
+    isDeleted: boolean;
     /**
      * Last name
      */
-    last_name?: string;
+    lastName?: string;
+    /**
+     * Last update
+     */
+    updatedAt: Date;
 }
 
 /**
@@ -199,9 +211,12 @@ function r(name: string) {
 const typeMap: any = {
     "Person": o([
         { json: "address", js: "address", typ: u(undefined, r("Address")) },
-        { json: "birth_date", js: "birth_date", typ: u(undefined, "") },
-        { json: "first_name", js: "first_name", typ: u(undefined, "") },
-        { json: "last_name", js: "last_name", typ: u(undefined, "") },
+        { json: "birthDate", js: "birthDate", typ: u(undefined, Date) },
+        { json: "firstName", js: "firstName", typ: u(undefined, "") },
+        { json: "id", js: "id", typ: u(undefined, "") },
+        { json: "isDeleted", js: "isDeleted", typ: true },
+        { json: "lastName", js: "lastName", typ: u(undefined, "") },
+        { json: "updatedAt", js: "updatedAt", typ: Date },
     ], "any"),
     "Address": o([
         { json: "Additional", js: "Additional", typ: u(undefined, "") },
